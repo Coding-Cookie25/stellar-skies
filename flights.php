@@ -8,8 +8,8 @@ function getAccessToken() {
         return $cachedToken;
     }
 
-    $apiKey = 'mD1ONp8zhJLSFEi0v9u9btpPdwHNt0io';     // <-- put your real API key
-    $apiSecret = 'MwIuV8DwFIAyxuWK';  // <-- and secret here
+    $apiKey = '';     // <-- put your real API key
+    $apiSecret = '';  // <-- and secret here
 
     $curl = curl_init();
     curl_setopt_array($curl, [
