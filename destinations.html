@@ -1,0 +1,389 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.html"); // or show error message
+    exit;
+}
+?>
+<html>
+<head>
+    <title>Destinations | Stellar Skies</title>
+    <!-- Add this in <head> -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
+
+</head>
+
+<style> 
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rubik:wght@300;400;500;700&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Rubik', sans-serif;
+    background: linear-gradient(135deg, #0a0a0a, #1b1b1b);
+    color: #f8f8f8;
+    min-width: 250px;
+    overflow-x: hidden;
+}
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.7;
+}
+    /* Navbar */
+    .navbar {
+      background: rgba(0, 0, 0, 0.85);
+      padding: 1rem 2rem;
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .nav-link {
+      color: #ff4d4d !important;
+      margin: 0 10px;
+      transition: 0.3s;
+    }
+
+    .nav-link:hover {
+      color: #fff !important;
+    }
+
+    .dropdown-menu-dark {
+      background-color: rgba(0, 0, 0, 0.95);
+      border: none;
+      border-radius: 10px;
+    }
+
+    .dropdown-menu-dark .dropdown-item {
+      color: #f0f0f0;
+      padding: 10px 20px;
+      font-size: 1rem;
+    }
+
+    .dropdown-menu-dark .dropdown-item:hover {
+      background-color: #ff007f;
+      color: #fff;
+      border-radius: 5px;
+    }
+
+    /* Search */
+    .search-container {
+      display: flex;
+      align-items: center;
+      background: #2c2c2c;
+      padding: 8px 15px;
+      border-radius: 50px;
+      margin-left: 20px;
+    }
+
+    #searchBar {
+      background: transparent;
+      border: none;
+      color: #fff;
+      width: 220px;
+      padding: 5px 10px;
+    }
+
+    #searchBar::placeholder {
+      color: #ccc;
+    }
+
+    .search-container button {
+      background: #817a7d;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+.login-btn {
+    background: #ff007f;
+    color: white;
+    font-size: 16px;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-btn:hover {
+    background: #ff4da6;
+}
+.destination-section {
+    padding: 100px 50px;
+    text-align: center;
+}
+
+.glow-text {
+    font-size: 36px;
+    font-family: 'Orbitron', sans-serif;
+    color: #ff007f;
+    text-shadow: 0 0 15px rgba(255, 0, 127, 0.7);
+}
+.destination-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.destination-box {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+.destination-box img {
+    width: 100%;
+    height: 150px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.destination-box:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 0px 15px rgba(255, 0, 127, 0.7);
+}
+
+.destination-box h3 {
+    color: #ff007f;
+    margin-top: 10px;
+}
+
+.book-btn {
+    background: #ff007f;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.book-btn:hover {
+    background: #ff4da6;
+}
+footer {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  padding: 40px 0 60px;
+  font-size: 0.95rem;
+  color: #bbb;
+}
+
+footer .container {
+  max-width: 1200px;
+  margin: auto;
+  text-align: center;
+}
+
+footer .links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-bottom: 20px;
+}
+
+footer .links a {
+  color: #fff;
+  text-decoration: none;
+}
+
+footer .links a:hover {
+  color: #ff4d4d;
+}
+
+
+</style>
+<body>
+<video autoplay muted loop class="video-background">
+    <source src="3784238-hd_1920_1080_24fps.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="#">✈ Stellar Skies</a>
+
+    <div class="search-container ml-4">
+      <input type="text" id="searchBar" placeholder="Search...">
+      <button onclick="performSearch()">🔍</button>
+    </div>
+
+    <button class="navbar-toggler text-white" type="button" data-toggle="collapse" data-target="#navbarNav">
+      ☰
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" data-toggle="dropdown">About Us</a>
+          <div class="dropdown-menu dropdown-menu-dark">
+            <a class="dropdown-item" href="about.html">Who We Are</a>
+            <a class="dropdown-item" href="history.html">History</a>
+            <a class="dropdown-item" href="founders.html">Our Founders</a>
+            <a class="dropdown-item" href="terms.html">Terms</a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="destDropdown" data-toggle="dropdown">Destinations</a>
+          <div class="dropdown-menu dropdown-menu-dark">
+            <a class="dropdown-item" href="destinations.html">Explore All</a>
+            <a class="dropdown-item" href="popular.html">Popular</a>
+            <a class="dropdown-item" href="luxury travel.html">Luxury Trips</a>
+            <a class="dropdown-item" href="budget travel.html">Budget Travel</a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="bookDropdown" data-toggle="dropdown">Book Now</a>
+          <div class="dropdown-menu dropdown-menu-dark">
+            <a class="dropdown-item" href="trip details.html">Trip Details</a>
+            <a class="dropdown-item" href="payment page.html">Payment</a>
+            <a class="dropdown-item" href="confirmation page.html">Confirmation</a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="loginDropdown" data-toggle="dropdown">Account</a>
+          <div class="dropdown-menu dropdown-menu-dark">
+            <a class="dropdown-item" href="login.html">Login</a>
+            <a class="dropdown-item" href="register.html">Sign Up</a>
+            <a class="dropdown-item" href="forgot password.html">Forgot Password</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+    <section class="destination-section">
+        <h1 class="glow-text">Domestic Destinations</h1>
+        <div class="destination-grid">
+            <div class="destination-box">
+                <img src="https://th.bing.com/th/id/OIP.ctjxLFlGySEbcYHrBxM48gHaEo?rs=1&pid=ImgDetMain" alt="Mumbai">
+                <h3>Mumbai</h3>
+                <p>₹5,499</p>
+                <button class="book-btn" onclick="window.location.href='trip details.html'">Book Now</button>
+            </div>
+            <div class="destination-box">
+                <img src="https://wallpaperaccess.com/full/1896134.jpg" alt="Delhi">
+                <h3>Delhi</h3>
+                <p>₹4,999</p>
+                <button class="book-btn">Book Now</button>
+            </div>
+            <div class="destination-box">
+                <img src="https://th.bing.com/th/id/OIP.gzBiyj9O8XcQLcT_TXIj2wHaE8?w=1000&h=667&rs=1&pid=ImgDetMain" alt="Goa">
+                <h3>Goa</h3>
+                <p>₹6,299</p>
+                <button class="book-btn" onclick="window.location.href='trip details.html'">Book Now</button>
+            </div>
+            <div class="destination-box">
+                <img src="https://th.bing.com/th/id/OIP.RtrCvimJC5srRXmXQUug7AHaE8?rs=1&pid=ImgDetMain" alt="Kerala">
+                <h3>Kerala</h3>
+                <p>₹5,799</p>
+                <button class="book-btn" onclick="window.location.href='trip details.html'">Book Now</button>
+            </div>
+            <div class="destination-box">
+                <img src="https://th.bing.com/th/id/OIP.2S92c3rNR8d5XNuse7mKKgHaE8?w=600&h=400&rs=1&pid=ImgDetMain" alt="Jaipur">
+                <h3>Jaipur</h3>
+                <p>₹4,499</p>
+                <button class="book-btn" onclick="window.location.href='trip details.html'">Book Now</button>
+            </div>
+        </div>
+    </section>
+    <section class="destination-section">
+        <h1 class="glow-text">International Destinations</h1>
+        <div class="destination-grid">
+            <div class="destination-box">
+                <img src="https://th.bing.com/th/id/OIP.Zo8bf9qQ4T7WZZaDf3g4DAHaF7?w=1280&h=1024&rs=1&pid=ImgDetMain" alt="New York">
+                <h3>New York</h3>
+                <p>₹49,999</p>
+                <button class="book-btn" onclick="window.location.href='trip details.html'">Book Now</button>
+            </div>
+            <div class="destination-box">
+                <img src="https://assets.londonist.com/uploads/2015/11/parliament.jpg" alt="London">
+                <h3>London</h3>
+                <p>₹45,999</p>
+                <button class="book-btn" onclick="window.location.href='trip details.html'">Book Now</button>
+            </div>
+            <div class="destination-box">
+                <img src="https://th.bing.com/th/id/OIP.ROXYXyC0orJ8eaMH-RUHyQHaFS?w=1460&h=1043&rs=1&pid=ImgDetMain" alt="Dubai">
+                <h3>Dubai</h3>
+                <p>₹20,499</p>
+                <button class="book-btn" onclick="window.location.href='trip details.html'">Book Now</button>
+            </div>
+            <div class="destination-box">
+                <img src="https://a.cdn-hotels.com/gdcs/production44/d14/75a0e859-0146-4d78-8097-211d5ce89278.jpg?impolicy=fcrop&w=1600&h=1066&q=medium" alt="Mykonos">
+                <h3>Mykonos</h3>
+                <p>₹52,999</p>
+                <button class="book-btn" onclick="window.location.href='trip details.html'">Book Now</button>
+            </div>
+            <div class="destination-box">
+                <img src="https://res.cloudinary.com/dtljonz0f/image/upload/c_auto,ar_1:1,w_3840,g_auto/f_auto/q_auto/v1/gc-v1/paris/3%20giorni%20a%20Parigi%20Tour%20Eiffel?_a=BAVAZGDX0" alt="Paris">
+                <h3>Paris</h3>
+                <p>₹48,499</p>
+                <button class="book-btn" onclick="window.location.href='trip details.html'">Book Now</button>
+            </div>
+        </div>
+    </section>
+         <footer>
+            <div class="container">
+              <div class="links">
+                <a href="about.html">About</a>
+                <a href="destinations.html">Destinations</a>
+                <a href="trip details.html">Book</a>
+                <a href="contact us.html">Contact</a>
+              </div>
+              <div class="contact">
+                📍 Delhi, India · ✉️ support@stellarskies.com · ☎ +91 9993213543
+              </div>
+              <div class="copyright">
+                &copy; 2025 Stellar Skies Ltd. All rights reserved.
+              </div>
+            </div>
+          </footer>
+    <script>
+            // Search Function
+    const pages = [
+      { name: "Home", url: "index (2).html" },
+      { name: "About Us", url: "about.html" },
+      { name: "Destinations", url: "destinations.html" },
+      { name: "Book Now", url: "trip details.html" },
+      { name: "Login", url: "login.html" },
+      { name: "budget-friendly destinations", url: "budget travel.html" },
+      { name: "Luxury Travelling", url: "Luxury travel.html" },
+      { name: "popular destinations", url: "popular.html" },
+    ];
+
+    function performSearch() {
+      const query = document.getElementById("searchBar").value.toLowerCase();
+      const result = pages.find(page => page.name.toLowerCase().includes(query));
+      if (result) {
+        window.location.href = result.url;
+      } else {
+        alert("No results found.");
+      }
+    }
+    </script>
+</body>
+</html>

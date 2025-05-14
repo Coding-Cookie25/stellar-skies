@@ -1,0 +1,105 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.html"); // or show error message
+    exit;
+}
+?>
+<html>
+    <head>
+        <title>Search Bar</title>
+        <link rel="stylesheet" href="searchbar.css">
+        <script src="searchbar.js"></script>
+        <style>
+            /* Updated Search Bar Styling */
+            .search-container {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #2c2c2c; /* Dark background */
+                padding: 10px 15px;
+                border-radius: 50px;
+                box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+                position: absolute;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 1000;
+            }
+
+            #searchBar {
+                padding: 10px 15px;
+                width: 250px;
+                border: none;
+                outline: none;
+                background: transparent;
+                color: #fff;
+                font-size: 16px;
+                border-radius: 25px;
+                margin-right: 10px;
+                transition: all 0.3s ease-in-out;
+            }
+
+            #searchBar::placeholder {
+                color: #b3b3b3; /* Light gray placeholder */
+            }
+
+            #searchBar:focus {
+                outline: none;
+            }
+
+            button {
+                background: #fff; /* White button */
+                border: none;
+                cursor: pointer;
+                color: #2c2c2c; /* Dark icon color */
+                font-size: 16px;
+                padding: 10px;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+                transition: all 0.3s ease-in-out;
+            }
+
+            button:hover {
+                background: #f0f0f0; /* Slightly lighter button on hover */
+                box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Search Bar HTML -->
+        <div class="search-container">
+            <input type="text" id="searchBar" placeholder="Search">
+            <button onclick="performSearch()">🔍</button>
+        </div>
+
+        <!-- Search Bar JavaScript -->
+        <script>
+            const pages = [
+                { name: "Home", url: "index (2).html" },
+                { name: "About Us", url: "about.html" },
+                { name: "Destinations", url: "destinations.html" },
+                { name: "Book Now", url: "booking.html" },
+                { name: "Login", url: "login.html" },
+                { name: "Terms and Conditions", url: "terms.html" },
+                { name: "Privacy Policy", url: "privacy.html" }
+            ];
+
+            function performSearch() {
+                let query = document.getElementById("searchBar").value.toLowerCase();
+                let results = pages.filter(page => page.name.toLowerCase().includes(query));
+                
+                if (results.length > 0) {
+                    window.location.href = results[0].url;
+                } else {
+                    alert("No results found. Try searching for another term.");
+                }
+            }
+        </script>
+    </body>
+</html>

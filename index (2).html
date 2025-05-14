@@ -1,0 +1,333 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.html"); // or show error message
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stellar Skies | Home</title>
+
+  <!-- External Libraries -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://use.typekit.net/cav5lva.css"/>
+  <link rel="icon" type="image/ico" href="static/img/favicon.ico"/>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Rubik', sans-serif;
+      color: #0d0d0d;
+      background-size: cover;
+      overflow-x: hidden;
+    }
+
+    video#bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+      filter: none;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: rgba(0, 0, 0, 0.85);
+      padding: 1rem 2rem;
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .nav-link {
+      color: #ff4d4d !important;
+      margin: 0 10px;
+      transition: 0.3s;
+    }
+
+    .nav-link:hover {
+      color: #fff !important;
+    }
+
+    .dropdown-menu-dark {
+      background-color: rgba(0, 0, 0, 0.95);
+      border: none;
+      border-radius: 10px;
+    }
+
+    .dropdown-menu-dark .dropdown-item {
+      color: #f0f0f0;
+      padding: 10px 20px;
+      font-size: 1rem;
+    }
+
+    .dropdown-menu-dark .dropdown-item:hover {
+      background-color: #ff007f;
+      color: #fff;
+      border-radius: 5px;
+    }
+
+    /* Search */
+    .search-container {
+      display: flex;
+      align-items: center;
+      background: #2c2c2c;
+      padding: 8px 15px;
+      border-radius: 50px;
+      margin-left: 20px;
+    }
+
+    #searchBar {
+      background: transparent;
+      border: none;
+      color: #fff;
+      width: 220px;
+      padding: 5px 10px;
+    }
+
+    #searchBar::placeholder {
+      color: #ccc;
+    }
+
+    .search-container button {
+      background: #817a7d;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 140px 20px 100px;
+      backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 15px;
+      margin: 50px auto;
+      width: 85%;
+      color: white;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      font-weight: bold;
+      text-shadow: 0 0 15px rgba(255, 77, 77, 0.8);
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      margin-bottom: 30px;
+    }
+
+    .hero-btn {
+      background: linear-gradient(45deg, #ff4d4d, #b300b3);
+      border: none;
+      padding: 15px 40px;
+      font-size: 1.2rem;
+      border-radius: 50px;
+      color: #fff;
+      transition: 0.4s;
+    }
+
+    .hero-btn:hover {
+      background: linear-gradient(45deg, #b300b3, #ff4d4d);
+      transform: scale(1.05);
+    }
+
+    /* Feature Cards */
+    .feature-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      padding: 25px;
+      border-radius: 12px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      color: white;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 0 25px rgba(255, 77, 77, 0.6);
+    }
+
+    /* Footer */
+    footer {
+      background: rgba(0, 0, 0, 0.95);
+      padding: 40px 0 80px;
+      text-align: center;
+      font-size: 0.95rem;
+      color: #bbb;
+    }
+
+    footer .links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin-bottom: 20px;
+    }
+
+    footer .links a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    footer .links a:hover {
+      color: #ff4d4d;
+    }
+  </style>
+</head>
+
+<body>
+  <video autoplay muted loop id="bg-video">
+    <source src="Untitled design.mp4" />
+  </video>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="#">✈ Stellar Skies</a>
+
+    <div class="search-container ml-4">
+      <input type="text" id="searchBar" placeholder="Search...">
+      <button onclick="performSearch()">🔍</button>
+    </div>
+
+    <button class="navbar-toggler text-white" type="button" data-toggle="collapse" data-target="#navbarNav">
+      ☰
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" data-toggle="dropdown">About Us</a>
+          <div class="dropdown-menu dropdown-menu-dark">
+            <a class="dropdown-item" href="about.html">Who We Are</a>
+            <a class="dropdown-item" href="history.html">History</a>
+            <a class="dropdown-item" href="founders.html">Our Founders</a>
+            <a class="dropdown-item" href="terms.html">Terms</a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="destDropdown" data-toggle="dropdown">Destinations</a>
+          <div class="dropdown-menu dropdown-menu-dark">
+            <a class="dropdown-item" href="destinations.html">Explore All</a>
+            <a class="dropdown-item" href="popular.html">Popular</a>
+            <a class="dropdown-item" href="luxury travel.html">Luxury Trips</a>
+            <a class="dropdown-item" href="budget travel.html">Budget Travel</a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="bookDropdown" data-toggle="dropdown">Book Now</a>
+          <div class="dropdown-menu dropdown-menu-dark">
+            <a class="dropdown-item" href="trip details.html">Trip Details</a>
+            <a class="dropdown-item" href="payment page.html">Payment</a>
+            <a class="dropdown-item" href="confirmation page.html">Confirmation</a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="loginDropdown" data-toggle="dropdown">Account</a>
+          <div class="dropdown-menu dropdown-menu-dark">
+            <a class="dropdown-item" href="login.html">Login</a>
+            <a class="dropdown-item" href="register.html">Sign Up</a>
+            <a class="dropdown-item" href="forgot password.html">Forgot Password</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Stellar Skies</h1>
+    <p>Your next adventure awaits. Fly with us today!</p>
+    <button class="hero-btn" onclick="window.location.href='destinations.html'">Book Now</button>
+  </section>
+
+  <!-- Features -->
+  <section class="container my-5">
+    <h2 class="text-center mb-4">Why Choose Us?</h2>
+    <div class="row">
+      <div class="col-md-4"><div class="feature-card text-center"><h4>🚀 Best Prices</h4><p>Unbeatable deals on flights.</p></div></div>
+      <div class="col-md-4"><div class="feature-card text-center"><h4>🌍 Global Reach</h4><p>Fly to over 100+ destinations.</p></div></div>
+      <div class="col-md-4"><div class="feature-card text-center"><h4>🔒 Secure Payments</h4><p>Encrypted, safe transactions.</p></div></div>
+    </div>
+  </section>
+<br><br>
+<br><br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+  <!-- Footer -->
+  <footer>
+    <div class="links">
+      <a href="about.html">About</a>
+      <a href="destinations.html">Destinations</a>
+      <a href="trip details.html">Book</a>
+      <a href="contact us.html">Contact</a>
+    </div>
+    <div class="contact">
+      📍 Delhi, India · ✉️ support@stellarskies.com · ☎ +91 9993213543
+    </div>
+    <div class="copyright">
+      &copy; 2025 Stellar Skies Ltd. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    // FAQ Toggle
+    document.querySelectorAll(".faq-question").forEach(button => {
+      button.addEventListener("click", () => {
+        const item = button.parentElement;
+        document.querySelectorAll(".faq-item").forEach(i => i.classList.remove("active"));
+        item.classList.toggle("active");
+      });
+    });
+
+    // Search Function
+    const pages = [
+      { name: "Home", url: "index (2).html" },
+      { name: "About Us", url: "about.html" },
+      { name: "Destinations", url: "destinations.html" },
+      { name: "Book Now", url: "trip details.html" },
+      { name: "Login", url: "login.html" },
+      { name: "budget-friendly destinations", url: "budget travel.html" },
+      { name: "Luxury Travelling", url: "Luxury travel.html" },
+      { name: "popular destinations", url: "popular.html" },
+    ];
+
+    function performSearch() {
+      const query = document.getElementById("searchBar").value.toLowerCase();
+      const result = pages.find(page => page.name.toLowerCase().includes(query));
+      if (result) {
+        window.location.href = result.url;
+      } else {
+        alert("No results found.");
+      }
+    }
+  </script>
+</body>
+</html>

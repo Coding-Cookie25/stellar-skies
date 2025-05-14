@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Booking Confirmed | Stellar Skies</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
+ <!-- Add this in <head> -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
+
+<style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Rubik', sans-serif;
+      background: linear-gradient(135deg, #0a0a0a, #1b1b1b);
+      color: #fff;
+    }
+    .video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+      opacity: 0.4;
+    }
+        /* Navbar */
+        .navbar {
+      background: rgba(0, 0, 0, 0.85);
+      padding: 1rem 2rem;
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .nav-link {
+      color: #ff4d4d !important;
+      margin: 0 10px;
+      transition: 0.3s;
+    }
+
+    .nav-link:hover {
+      color: #fff !important;
+    }
+
+    .dropdown-menu-dark {
+      background-color: rgba(0, 0, 0, 0.95);
+      border: none;
+      border-radius: 10px;
+    }
+
+    .dropdown-menu-dark .dropdown-item {
+      color: #f0f0f0;
+      padding: 10px 20px;
+      font-size: 1rem;
+    }
+
+    .dropdown-menu-dark .dropdown-item:hover {
+      background-color: #ff007f;
+      color: #fff;
+      border-radius: 5px;
+    }
+
+    /* Search */
+    .search-container {
+      display: flex;
+      align-items: center;
+      background: #2c2c2c;
+      padding: 8px 15px;
+      border-radius: 50px;
+      margin-left: 20px;
+    }
+
+    #searchBar {
+      background: transparent;
+      border: none;
+      color: #fff;
+      width: 220px;
+      padding: 5px 10px;
+    }
+
+    #searchBar::placeholder {
+      color: #ccc;
+    }
+
+    .search-container button {
+      background: #817a7d;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .container {
+      max-width: 700px;
+      margin: 80px auto;
+      padding: 40px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 15px;
+      box-shadow: 0 0 25px rgba(255, 0, 127, 0.5);
+    }
+    h2 {
+      font-family: 'Orbitron', sans-serif;
+      color: #ff00ff;
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px;
+      border-bottom: 1px solid #333;
+    }
+    th {
+      color: #ff00ff;
+    }
+    td {
+      color: #fff;
+    }
+    button {
+      display: block;
+      margin: 30px auto 0;
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      background: linear-gradient(45deg, #ff007f, #b300b3);
+      border: none;
+      color: white;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #ff00ff;
+    }
+    footer {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  padding: 40px 0 60px;
+  font-size: 0.95rem;
+  color: #bbb;
+}
+
+footer .container {
+  max-width: 1200px;
+  margin: auto;
+  text-align: center;
+}
+
+footer .links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-bottom: 20px;
+}
+
+footer .links a {
+  color: #fff;
+  text-decoration: none;
+}
+
+footer .links a:hover {
+  color: #ff4d4d;
+}
+
+  </style>
+</head>
+<body>
+  <video class="video-background" autoplay loop muted>
+    <source src="WhatsApp Video 2025-03-18 at 16.02.33.mp4" type="video/mp4">
+  </video>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="index (2).html">✈ Stellar Skies</a>
+
+    <div class="search-container ml-4">
+      <input type="text" id="searchBar" placeholder="Search...">
+      <button onclick="performSearch()">🔍</button>
+    </div>
+
+    <button class="navbar-toggler text-white" type="button" data-toggle="collapse" data-target="#navbarNav">
+      ☰
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" data-toggle="dropdown">About Us</a>
+          <div class="dropdown-menu dropdown-menu-dark">
+            <a class="dropdown-item" href="about.html">Who We Are</a>
+            <a class="dropdown-item" href="history.html">History</a>
+            <a class="dropdown-item" href="founders.html">Our Founders</a>
+            <a class="dropdown-item" href="terms.html">Terms</a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="destDropdown" data-toggle="dropdown">Destinations</a>
+          <div class="dropdown-menu dropdown-menu-dark">
+            <a class="dropdown-item" href="destinations.html">Explore All</a>
+            <a class="dropdown-item" href="popular.html">Popular</a>
+            <a class="dropdown-item" href="luxury travel.html">Luxury Trips</a>
+            <a class="dropdown-item" href="budget travel.html">Budget Travel</a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="bookDropdown" data-toggle="dropdown">Book Now</a>
+          <div class="dropdown-menu dropdown-menu-dark">
+            <a class="dropdown-item" href="trip details.html">Trip Details</a>
+            <a class="dropdown-item" href="payment page.html">Payment</a>
+            <a class="dropdown-item" href="confirmation page.html">Confirmation</a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="loginDropdown" data-toggle="dropdown">Account</a>
+          <div class="dropdown-menu dropdown-menu-dark">
+            <a class="dropdown-item" href="login.html">Login</a>
+            <a class="dropdown-item" href="register.html">Sign Up</a>
+            <a class="dropdown-item" href="forgot password.html">Forgot Password</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h2>Booking Confirmed ✅</h2>
+    <p style="text-align:center;">Your flight has been successfully booked. Here's your ticket info:</p>
+
+    <table>
+      <tr><th>Passenger Name</th><td>gourang Madan</td></tr>
+      <tr><th>Age</th><td>20</td></tr>
+      <tr><th>Email</th><td>gmadaan@gmail.com</td></tr>
+      <tr><th>Contact</th><td>57125495832</td></tr>
+      <tr><th>Trip Type</th><td>One Way</td></tr>
+      <tr><th>Departure</th><td>Delhi</td></tr>
+      <tr><th>Arrival</th><td>Paris</td></tr>
+      <tr><th>No. of Passengers</th><td>2</td></tr>
+      <tr><th>Class</th><td>Buisness</td></tr>
+      <tr><th>Payment Status</th><td>✅ Confirmed</td></tr>
+    </table>
+    
+
+    <button onclick="downloadTicket()">⬇️ Download Ticket</button>
+  </div>
+
+  <script>
+    // Search Function
+    const pages = [
+      { name: "Home", url: "index (2).html" },
+      { name: "About Us", url: "about.html" },
+      { name: "Destinations", url: "destinations.html" },
+      { name: "Book Now", url: "trip details.html" },
+      { name: "Login", url: "login.html" },
+      { name: "budget-friendly destinations", url: "budget travel.html" },
+      { name: "Luxury Travelling", url: "Luxury travel.html" },
+      { name: "popular destinations", url: "popular.html" },
+    ];
+
+    function performSearch() {
+      const query = document.getElementById("searchBar").value.toLowerCase();
+      const result = pages.find(page => page.name.toLowerCase().includes(query));
+      if (result) {
+        window.location.href = result.url;
+      } else {
+        alert("No results found.");
+      }
+    }
+
+    window.onload = function () {
+      function getData(key) {
+        return localStorage.getItem(key) || "";
+      }
+
+      document.getElementById("passengerName").innerText = getData("name");
+      document.getElementById("passengerAge").innerText = getData("age");
+      document.getElementById("passengerEmail").innerText = getData("email");
+      document.getElementById("passengerContact").innerText = getData("contact");
+      document.getElementById("tripType").innerText = getData("tripType");
+      document.getElementById("departure").innerText = getData("departureDate");
+      document.getElementById("arrival").innerText = getData("destination");
+      document.getElementById("passengers").innerText = getData("travelers");
+      document.getElementById("flightClass").innerText = getData("travelClass");
+      document.getElementById("amountPaid").innerText = "₹" + getData("totalPrice");
+    };
+
+    function downloadTicket() {
+      const name = document.getElementById("passengerName").innerText;
+      const content = `\n\n✈️ Stellar Skies - Flight Ticket Confirmation ✨\n\n` +
+        `Passenger Name: ${name}\n` +
+        `Age: ${document.getElementById("passengerAge").innerText}\n` +
+        `Email: ${document.getElementById("passengerEmail").innerText}\n` +
+        `Contact: ${document.getElementById("passengerContact").innerText}\n` +
+        `Trip Type: ${document.getElementById("tripType").innerText}\n` +
+        `Departure: ${document.getElementById("departure").innerText}\n` +
+        `Arrival: ${document.getElementById("arrival").innerText}\n` +
+        `Passengers: ${document.getElementById("passengers").innerText}\n` +
+        `Class: ${document.getElementById("flightClass").innerText}\n` +
+        `Payment Status: ✅ Confirmed\n` +
+        `Amount Paid: ${document.getElementById("amountPaid").innerText}\n\n` +
+        `Thank you for booking with Stellar Skies!`; 
+
+      const blob = new Blob([content], { type: 'text/plain' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `${name}_StellarSkies_Ticket.txt`;
+      link.click();
+    }
+  </script>
+          <footer>
+            <div class="container">
+              <div class="links">
+                <a href="about.html">About</a>
+                <a href="destinations.html">Destinations</a>
+                <a href="trip details.html">Book</a>
+                <a href="contact us.html">Contact</a>
+              </div>
+              <div class="contact">
+                📍 Delhi, India · ✉️ support@stellarskies.com · ☎ +91 9993213543
+              </div>
+              <div class="copyright">
+                &copy; 2025 Stellar Skies Ltd. All rights reserved.
+              </div>
+            </div>
+          </footer>
+</body>
+</html>

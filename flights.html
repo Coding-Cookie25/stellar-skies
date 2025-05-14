@@ -1,0 +1,394 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.html"); // or show error message
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flights | Stellar Skies</title>
+    <link rel="stylesheet" href="C:\Users\Anam\OneDrive\Documents\Stellar Skies\flights.css">
+    <script defer src="flights.js"></script>
+    <!-- Add this in <head> -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+            text-align: center;
+        }
+    /* Navbar */
+    .navbar {
+      background: rgba(0, 0, 0, 0.85);
+      padding: 1rem 2rem;
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .nav-link {
+      color: #ff4d4d !important;
+      margin: 0 10px;
+      transition: 0.3s;
+    }
+
+    .nav-link:hover {
+      color: #fff !important;
+    }
+
+    .dropdown-menu-dark {
+      background-color: rgba(0, 0, 0, 0.95);
+      border: none;
+      border-radius: 10px;
+    }
+
+    .dropdown-menu-dark .dropdown-item {
+      color: #f0f0f0;
+      padding: 10px 20px;
+      font-size: 1rem;
+    }
+
+    .dropdown-menu-dark .dropdown-item:hover {
+      background-color: #ff007f;
+      color: #fff;
+      border-radius: 5px;
+    }
+
+    /* Search */
+    .search-container {
+      display: flex;
+      align-items: center;
+      background: #2c2c2c;
+      padding: 8px 15px;
+      border-radius: 50px;
+      margin-left: 20px;
+    }
+
+    #searchBar {
+      background: transparent;
+      border: none;
+      color: #fff;
+      width: 220px;
+      padding: 5px 10px;
+    }
+
+    #searchBar::placeholder {
+      color: #ccc;
+    }
+
+    .search-container button {
+      background: #817a7d;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+    }
+        .flights {
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+        .flight-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .flight {
+            background-color: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px pink;
+            width: 300px;
+        }
+        button {
+            background-color: #ff0080;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        select {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        /* Flight Sections */
+.flights {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.flight-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.flight {
+    background: #000;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(255, 0, 127, 0.5);
+    max-width: 300px;
+    text-align: center;
+}
+
+.flight h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Book Now Button */
+button {
+    background: #ff007f;
+    border: none;
+    padding: 12px 30px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    border-radius: 50px;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #ff4da6;
+    box-shadow: 0px 0px 15px #ff4da6;
+    transform: scale(1.05);
+}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Available Flights</h1>
+    </header>
+    
+    <section class="flights">
+        <h2>Domestic Flights</h2>
+        <div class="flight-list">
+            <div class="flight">
+                <h3>Delhi → Mumbai</h3>
+                <p>Aircraft: Airbus A320</p>
+                <p>Price: ₹<span class="price">5,500</span></p>
+                <label>Class:
+                    <select class="class-select" data-base-price="5500">
+                        <option value="1">Economy</option>
+                        <option value="1.5">Business</option>
+                        <option value="2">First</option>
+                    </select>
+                </label>
+                <button onclick="window.location.href='booking.html'">Book Now</button>
+            </div>
+            <div class="flight">
+                <h3>Bangalore → Kolkata</h3>
+                <p>Aircraft: Boeing 737</p>
+                <p>Price: ₹<span class="price">6,200</span></p>
+                <label>Class:
+                    <select class="class-select" data-base-price="6200">
+                        <option value="1">Economy</option>
+                        <option value="1.5">Business</option>
+                        <option value="2">First</option>
+                    </select>
+                </label>
+                <button onclick="window.location.href='booking.html'">Book Now</button>
+            </div>
+            <div class="flight">
+                <h3>Chennai → Hyderabad</h3>
+                <p>Aircraft: ATR 72</p>
+                <p>Price: ₹<span class="price">3,800</span></p>
+                <label>Class:
+                    <select class="class-select" data-base-price="3800">
+                        <option value="1">Economy</option>
+                        <option value="1.5">Business</option>
+                        <option value="2">First</option>
+                    </select>
+                </label>
+                <button onclick="window.location.href='booking.html'">Book Now</button>
+            </div>
+            <div class="flight">
+                <h3>Goa → Delhi</h3>
+                <p>Aircraft: Boeing 230</p>
+                <p>Price: ₹<span class="price">3,800</span></p>
+                <label>Class:
+                    <select class="class-select" data-base-price="3800">
+                        <option value="1">Economy</option>
+                        <option value="1.5">Business</option>
+                        <option value="2">First</option>
+                    </select>
+                </label>
+                <button onclick="window.location.href='booking.html'">Book Now</button>
+            </div>
+            <div class="flight">
+                <h3>Chennai → Delhi</h3>
+                <p>Aircraft: Boeing 230</p>
+                <p>Price: ₹<span class="price">5,800</span></p>
+                <label>Class:
+                    <select class="class-select" data-base-price="5800">
+                        <option value="1">Economy</option>
+                        <option value="1.5">Business</option>
+                        <option value="2">First</option>
+                    </select>
+                </label>
+                <button onclick="window.location.href='booking.html'">Book Now</button>
+            </div>
+            <div class="flight">
+                <h3>Srinagar → Delhi</h3>
+                <p>Aircraft: Boeing 230</p>
+                <p>Price: ₹<span class="price">7,800</span></p>
+                <label>Class:
+                    <select class="class-select" data-base-price="7800">
+                        <option value="1">Economy</option>
+                        <option value="1.5">Business</option>
+                        <option value="2">First</option>
+                    </select>
+                </label>
+                <button onclick="window.location.href='booking.html'">Book Now</button>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
+    <section class="flights">
+        <h2>International Flights</h2>
+        <div class="flight-list">
+            <div class="flight">
+                <h3>Delhi → London</h3>
+                <p>Aircraft: Boeing 777</p>
+                <p>Price: ₹<span class="price">45,000</span></p>
+                <label>Class:
+                    <select class="class-select" data-base-price="45000">
+                        <option value="1">Economy</option>
+                        <option value="1.5">Business</option>
+                        <option value="2">First</option>
+                    </select>
+                </label>
+                <button onclick="window.location.href='booking.html'">Book Now</button>
+            </div>
+            <div class="flight">
+                <h3>Mumbai → Dubai</h3>
+                <p>Aircraft: Airbus A380</p>
+                <p>Price: ₹<span class="price">22,500</span></p>
+                <label>Class:
+                    <select class="class-select" data-base-price="22500">
+                        <option value="1">Economy</option>
+                        <option value="1.5">Business</option>
+                        <option value="2">First</option>
+                    </select>
+                </label>
+                <button onclick="window.location.href='booking.html'">Book Now</button>
+            </div>
+            <div class="flight">
+                <h3>Bangalore → Singapore</h3>
+                <p>Aircraft: Boeing 787</p>
+                <p>Price: ₹<span class="price">18,700</span></p>
+                <label>Class:
+                    <select class="class-select" data-base-price="18700">
+                        <option value="1">Economy</option>
+                        <option value="1.5">Business</option>
+                        <option value="2">First</option>
+                    </select>
+                </label>
+                <button onclick="window.location.href='booking.html'">Book Now</button>
+            </div>
+            <div class="flight-list">
+                <div class="flight">
+                    <h3>Mumbai→ Chicago</h3>
+                    <p>Aircraft: Airbus A321</p>
+                    <p>Price: ₹<span class="price">51,000</span></p>
+                    <label>Class:
+                        <select class="class-select" data-base-price="51000">
+                            <option value="1">Economy</option>
+                            <option value="1.5">Business</option>
+                            <option value="2">First</option>
+                        </select>
+                    </label>
+                    <button onclick="window.location.href='booking.html'">Book Now</button>
+                </div>
+                <div class="flight-list">
+                    <div class="flight">
+                        <h3>Delhi → Mykonos</h3>
+                        <p>Aircraft: Boeing 777</p>
+                        <p>Price: ₹<span class="price">45,000</span></p>
+                        <label>Class:
+                            <select class="class-select" data-base-price="45000">
+                                <option value="1">Economy</option>
+                                <option value="1.5">Business</option>
+                                <option value="2">First</option>
+                            </select>
+                        </label>
+                        <button onclick="window.location.href='booking.html'">Book Now</button>
+                    </div>
+                    <div class="flight-list">
+                        <div class="flight">
+                            <h3>Hyderabad → Los Angeles</h3>
+                            <p>Aircraft: Boeing 777</p>
+                            <p>Price: ₹<span class="price">65,000</span></p>
+                            <label>Class:
+                                <select class="class-select" data-base-price="65000">
+                                    <option value="1">Economy</option>
+                                    <option value="1.5">Business</option>
+                                    <option value="2">First</option>
+                                </select>
+                            </label>
+                            <button onclick="window.location.href='booking.html'">Book Now</button>
+                        </div>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+          <div class="links">
+            <a href="about.html">About</a>
+            <a href="destinations.html">Destinations</a>
+            <a href="trip details.html">Book</a>
+            <a href="contact us.html">Contact</a>
+          </div>
+          <div class="contact">
+            📍 Delhi, India · ✉️ support@stellarskies.com · ☎ +91 9993213543
+          </div>
+          <div class="copyright">
+            &copy; 2025 Stellar Skies Ltd. All rights reserved.
+          </div>
+        </div>
+      </footer>
+      
+    <script>
+            // Search Function
+    const pages = [
+      { name: "Home", url: "index (2).html" },
+      { name: "About Us", url: "about.html" },
+      { name: "Destinations", url: "destinations.html" },
+      { name: "Book Now", url: "trip details.html" },
+      { name: "Login", url: "login.html" },
+      { name: "budget-friendly destinations", url: "budget travel.html" },
+      { name: "Luxury Travelling", url: "Luxury travel.html" },
+      { name: "popular destinations", url: "popular.html" },
+    ];
+
+    function performSearch() {
+      const query = document.getElementById("searchBar").value.toLowerCase();
+      const result = pages.find(page => page.name.toLowerCase().includes(query));
+      if (result) {
+        window.location.href = result.url;
+      } else {
+        alert("No results found.");
+      }
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,326 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.html"); // or show error message
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Journey | Stellar Skies</title>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://use.typekit.net/cav5lva.css" />
+  <link rel="icon" href="static/img/favicon.ico" type="image/x-icon" />
+  <!-- Add this in <head> -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Rubik', sans-serif;
+      background: linear-gradient(to bottom right, #0d0d0d, #1a1a1a);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+     /* Navbar */
+     .navbar {
+      background: rgba(0, 0, 0, 0.85);
+      padding: 1rem 2rem;
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .nav-link {
+      color: #ff4d4d !important;
+      margin: 0 10px;
+      transition: 0.3s;
+    }
+
+    .nav-link:hover {
+      color: #fff !important;
+    }
+
+    .dropdown-menu-dark {
+      background-color: rgba(0, 0, 0, 0.95);
+      border: none;
+      border-radius: 10px;
+    }
+
+    .dropdown-menu-dark .dropdown-item {
+      color: #f0f0f0;
+      padding: 10px 20px;
+      font-size: 1rem;
+    }
+
+    .dropdown-menu-dark .dropdown-item:hover {
+      background-color: #ff007f;
+      color: #fff;
+      border-radius: 5px;
+    }
+
+    /* Search */
+    .search-container {
+      display: flex;
+      align-items: center;
+      background: #2c2c2c;
+      padding: 8px 15px;
+      border-radius: 50px;
+      margin-left: 20px;
+    }
+
+    #searchBar {
+      background: transparent;
+      border: none;
+      color: #fff;
+      width: 220px;
+      padding: 5px 10px;
+    }
+
+    #searchBar::placeholder {
+      color: #ccc;
+    }
+
+    .search-container button {
+      background: #817a7d;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .history-hero {
+      text-align: center;
+      padding: 100px 20px 50px;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(6px);
+    }
+
+    .history-hero h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #ff007f;
+      text-shadow: 0 0 15px rgba(255, 0, 127, 0.7);
+    }
+
+    .history-hero p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 20px auto 0;
+      color: #ccc;
+    }
+
+    .milestone-cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 50px auto;
+      padding: 0 20px;
+      gap: 30px;
+      max-width: 1200px;
+    }
+
+    .milestone-card {
+      background: linear-gradient(145deg, #181818, #101010);
+      border-radius: 20px;
+      color: #fff;
+      padding: 30px 25px;
+      width: 300px;
+      box-shadow: 0 10px 20px rgba(255, 0, 127, 0.3), 0 4px 6px rgba(255, 255, 255, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      perspective: 1000px;
+    }
+
+    .milestone-card:hover {
+      transform: translateY(-12px) rotateX(4deg) rotateY(-4deg);
+      box-shadow: 0 20px 30px rgba(255, 0, 127, 0.5), 0 8px 15px rgba(255, 255, 255, 0.1);
+    }
+
+    .milestone-card h3 {
+      font-size: 1.5rem;
+      color: #ff4d8b;
+      margin-bottom: 10px;
+    }
+
+    .milestone-card p {
+      font-size: 1rem;
+      color: #ddd;
+    }
+    /* Footer */
+    footer {
+      background: rgba(0, 0, 0, 0.95);
+      padding: 40px 0 80px;
+      text-align: center;
+      font-size: 0.95rem;
+      color: #bbb;
+    }
+
+    footer .links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin-bottom: 20px;
+    }
+
+    footer .links a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    footer .links a:hover {
+      color: #ff4d4d;
+    }
+
+    @media (max-width: 768px) {
+      .milestone-card {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg">
+  <a class="navbar-brand" href="#">✈ Stellar Skies</a>
+
+  <div class="search-container ml-4">
+    <input type="text" id="searchBar" placeholder="Search...">
+    <button onclick="performSearch()">🔍</button>
+  </div>
+
+  <button class="navbar-toggler text-white" type="button" data-toggle="collapse" data-target="#navbarNav">
+    ☰
+  </button>
+
+  <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" data-toggle="dropdown">About Us</a>
+        <div class="dropdown-menu dropdown-menu-dark">
+          <a class="dropdown-item" href="about.html">Who We Are</a>
+          <a class="dropdown-item" href="history.html">History</a>
+          <a class="dropdown-item" href="founders.html">Our Founders</a>
+          <a class="dropdown-item" href="terms.html">Terms</a>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="destDropdown" data-toggle="dropdown">Destinations</a>
+        <div class="dropdown-menu dropdown-menu-dark">
+          <a class="dropdown-item" href="destinations.html">Explore All</a>
+          <a class="dropdown-item" href="popular.html">Popular</a>
+          <a class="dropdown-item" href="luxury travel.html">Luxury Trips</a>
+          <a class="dropdown-item" href="budget travel.html">Budget Travel</a>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="bookDropdown" data-toggle="dropdown">Book Now</a>
+        <div class="dropdown-menu dropdown-menu-dark">
+          <a class="dropdown-item" href="trip details.html">Trip Details</a>
+          <a class="dropdown-item" href="payment page.html">Payment</a>
+          <a class="dropdown-item" href="confirmation page.html">Confirmation</a>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="loginDropdown" data-toggle="dropdown">Account</a>
+        <div class="dropdown-menu dropdown-menu-dark">
+          <a class="dropdown-item" href="login.html">Login</a>
+          <a class="dropdown-item" href="register.html">Sign Up</a>
+          <a class="dropdown-item" href="forgot password.html">Forgot Password</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+  <section class="history-hero">
+    <h1>Our Journey- The Making Of Stellar Skies</h1>
+    <p>
+      Stellar Skies is the result of a passionate full-stack development project built by a dedicated group of teammates.
+      From wireframes to working code, we turned our vision into reality with sweat, logic, and late-night coffee.
+    </p>
+  </section>
+
+  <section class="milestone-cards">
+    <div class="milestone-card">
+      <h3>🚀 Idea Born</h3>
+      <p>Our group started with a single goal — reimagine flight booking with AI and luxury fused into one platform.</p>
+    </div>
+    <div class="milestone-card">
+      <h3>🎨 Design Sprint</h3>
+      <p>We wireframed, sketched, and tested the user experience to match the needs of Gen-Z luxury travelers.</p>
+    </div>
+    <div class="milestone-card">
+      <h3>🧠 AI Integration</h3>
+      <p>We integrated chatbot and search systems to elevate the booking experience using intelligent suggestions.</p>
+    </div>
+    <div class="milestone-card">
+      <h3>💻 Front-End Magic</h3>
+      <p>We gave life to the site using modern CSS, gradients, animation, and dark aesthetic with custom interactions.</p>
+    </div>
+    <div class="milestone-card">
+      <h3>🔐 Secure Checkout</h3>
+      <p>Security was key — payments, bookings, and user data were handled with best practices and encryption.</p>
+    </div>
+    <div class="milestone-card">
+      <h3>🌐 Launch Day</h3>
+      <p>The site went live. Stellar Skies now welcomes dreamers and travelers from all across the globe.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="links">
+      <a href="about.html">About</a>
+      <a href="destinations.html">Destinations</a>
+      <a href="trip details.html">Book</a>
+      <a href="contact us.html">Contact</a>
+    </div>
+    <div class="contact">
+      📍 Delhi, India · ✉️ support@stellarskies.com · ☎ +91 9993213543
+    </div>
+    <div class="copyright">
+      &copy; 2025 Stellar Skies Ltd. All rights reserved.
+    </div>
+  </footer>     
+<script>
+      // Search Function
+      const pages = [
+      { name: "Home", url: "index (2).html" },
+      { name: "About Us", url: "about.html" },
+      { name: "Destinations", url: "destinations.html" },
+      { name: "Book Now", url: "trip details.html" },
+      { name: "Login", url: "login.html" },
+      { name: "budget-friendly destinations", url: "budget travel.html" },
+      { name: "Luxury Travelling", url: "Luxury travel.html" },
+      { name: "popular destinations", url: "popular.html" },
+    ];
+
+    function performSearch() {
+      const query = document.getElementById("searchBar").value.toLowerCase();
+      const result = pages.find(page => page.name.toLowerCase().includes(query));
+      if (result) {
+        window.location.href = result.url;
+      } else {
+        alert("No results found.");
+      }
+    }
+</script>
+</body>
+</html>

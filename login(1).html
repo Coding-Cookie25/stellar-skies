@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stellar Skies Login</title>
+  <link rel="stylesheet" href="style.css"> <!-- Optional: your own stylesheet -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #74ebd5, #ACB6E5);
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: #333;
+      overflow: hidden;
+      padding: 1rem;
+    }
+
+    .navbar a {
+      color: white;
+      padding: 14px 16px;
+      text-decoration: none;
+      float: left;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 100px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      background-color: #4CAF50;
+      color: white;
+      padding: 14px 20px;
+      margin-top: 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .extra-links {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .extra-links a {
+      color: #333;
+      text-decoration: none;
+    }
+
+    .extra-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Simulated navbar -->
+  <div class="navbar">
+    <a href="index.html">Home</a>
+    <a href="flights.php">Flights</a>
+    <a href="hotels.php">Hotels</a>
+    <a href="login.html" style="float: right;">Login</a>
+  </div>
+
+  <div class="container">
+    <h2>Login to Stellar Skies</h2>
+    <form action="login.php" method="post">
+      <label for="email">Email</label>
+      <input type="text" id="email" name="email" placeholder="Enter your email" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+      <button type="submit">Login</button>
+    </form>
+
+    <div class="extra-links">
+      <a href="forgot_password.php">Forgot Password?</a>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,258 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.html"); // or show error message
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Saved Flights | Stellar Skies</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://use.typekit.net/cav5lva.css"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Rubik', sans-serif;
+      background: linear-gradient(135deg, #0a0a0a, #1b1b1b);
+      color: #fff;
+      padding-top: 80px;
+    }
+    .navbar {
+      background: rgba(0, 0, 0, 0.9);
+      padding: 1rem 2rem;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 999;
+    }
+    .navbar-brand {
+      font-weight: bold;
+      color: #fff;
+    }
+    .nav-link {
+      color: #ff4d4d !important;
+      margin: 0 10px;
+    }
+    .nav-link:hover {
+      color: #fff !important;
+    }
+    .dropdown-menu-dark {
+      background-color: rgba(0, 0, 0, 0.95);
+      border-radius: 10px;
+    }
+    .dropdown-menu-dark .dropdown-item {
+      color: #f0f0f0;
+      padding: 10px 20px;
+    }
+    .dropdown-menu-dark .dropdown-item:hover {
+      background-color: #ff007f;
+      color: #fff;
+    }
+    .search-container {
+      display: flex;
+      align-items: center;
+      background: #2c2c2c;
+      padding: 5px 15px;
+      border-radius: 50px;
+      margin-left: 20px;
+    }
+    #searchBar {
+      background: transparent;
+      border: none;
+      color: #fff;
+      width: 180px;
+      padding: 5px 10px;
+    }
+    #searchBar::placeholder {
+      color: #ccc;
+    }
+    .search-container button {
+      background: #4e4c4d;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
+    h2 {
+      color: #ff007f;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .flight-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
+    }
+    .no-flights, .login-message {
+      text-align: center;
+      font-size: 1.2rem;
+      margin-top: 50px;
+      color: #ff007f;
+    }
+    footer {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      padding: 40px 0 60px;
+      font-size: 0.95rem;
+      color: #bbb;
+    }
+    footer .container {
+      max-width: 1200px;
+      margin: auto;
+      text-align: center;
+    }
+    footer .links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin-bottom: 20px;
+    }
+    footer .links a {
+      color: #fff;
+      text-decoration: none;
+    }
+    footer .links a:hover {
+      color: #ff4d4d;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="#">✈ Stellar Skies</a>
+
+    <div class="search-container ml-4">
+      <input type="text" id="searchBar" placeholder="Search...">
+      <button onclick="performSearch()">🔍</button>
+    </div>
+
+    <button class="navbar-toggler text-white" type="button" data-toggle="collapse" data-target="#navbarNav">
+      ☰
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" data-toggle="dropdown">About Us</a>
+          <div class="dropdown-menu dropdown-menu-dark">
+            <a class="dropdown-item" href="about.html">Who We Are</a>
+            <a class="dropdown-item" href="history.html">History</a>
+            <a class="dropdown-item" href="founders.html">Our Founders</a>
+            <a class="dropdown-item" href="terms.html">Terms</a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="destDropdown" data-toggle="dropdown">Destinations</a>
+          <div class="dropdown-menu dropdown-menu-dark">
+            <a class="dropdown-item" href="destinations.html">Explore All</a>
+            <a class="dropdown-item" href="popular.html">Popular</a>
+            <a class="dropdown-item" href="luxury travel.html">Luxury Trips</a>
+            <a class="dropdown-item" href="budget travel.html">Budget Travel</a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="bookDropdown" data-toggle="dropdown">Book Now</a>
+          <div class="dropdown-menu dropdown-menu-dark">
+            <a class="dropdown-item" href="trip details.html">Trip Details</a>
+            <a class="dropdown-item" href="payment page.html">Payment</a>
+            <a class="dropdown-item" href="confirmation page.html">Confirmation</a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="loginDropdown" data-toggle="dropdown">Account</a>
+          <div class="dropdown-menu dropdown-menu-dark">
+            <a class="dropdown-item" href="login.html">Login</a>
+            <a class="dropdown-item" href="register.html">Sign Up</a>
+            <a class="dropdown-item" href="forgot password.html">Forgot Password</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h2>Your Saved Flights</h2>
+    <div id="flightsContainer"></div>
+    <div id="message" class="no-flights" style="display:none;"></div>
+  </div>
+
+  <script>
+    function performSearch() {
+      const query = document.getElementById("searchBar").value.toLowerCase();
+      const pages = [
+        { name: "Home", url: "index.html" },
+        { name: "About", url: "about.html" },
+        { name: "Destinations", url: "destinations.html" },
+        { name: "Book Now", url: "trip_details.html" },
+        { name: "Login", url: "login.html" },
+        { name: "Budget-Friendly Destinations", url: "budget travel.html" },
+        { name: "Luxury Traveling", url: "luxury travel.html" },
+        { name: "Popular Destinations", url: "popular.html" }
+      ];
+      const result = pages.find(page => page.name.toLowerCase().includes(query));
+      if (result) {
+        window.location.href = result.url;
+      } else {
+        alert("No results found.");
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      fetch('saved_flights.php')
+        .then(response => {
+          if (response.status === 401) {
+            document.getElementById('message').textContent = 'Please login to view your saved flights.';
+            document.getElementById('message').className = 'login-message';
+            document.getElementById('message').style.display = 'block';
+            throw new Error('Unauthorized');
+          }
+          return response.json();
+        })
+        .then(data => {
+          const container = document.getElementById('flightsContainer');
+          if (data.length === 0) {
+            document.getElementById('message').textContent = 'No saved flights found.';
+            document.getElementById('message').style.display = 'block';
+            return;
+          }
+          data.forEach(flight => {
+            const details = flight.offer_details;
+            const card = document.createElement('div');
+            card.className = 'flight-card';
+            card.innerHTML = `
+              <strong>Flight ID:</strong> ${flight.flight_id}<br>
+              <strong>From:</strong> ${details.itineraries[0].segments[0].departure.iataCode} &rarr; <strong>To:</strong> ${details.itineraries[0].segments[0].arrival.iataCode}<br>
+              <strong>Departure:</strong> ${details.itineraries[0].segments[0].departure.at}<br>
+              <strong>Arrival:</strong> ${details.itineraries[0].segments[0].arrival.at}<br>
+              <strong>Airline:</strong> ${details.itineraries[0].segments[0].carrierCode}<br>
+              <strong>Price:</strong> ₹${details.price.total}<br>
+              <strong>Saved On:</strong> ${new Date(flight.saved_time).toLocaleString()}
+            `;
+            container.appendChild(card);
+          });
+        })
+        .catch(error => {
+          if (error.message !== 'Unauthorized') {
+            document.getElementById('message').textContent = 'Error loading saved flights. Please try again later.';
+            document.getElementById('message').style.display = 'block';
+          }
+        });
+    });
+  </script>
+</body>
+</html>

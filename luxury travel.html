@@ -1,0 +1,343 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.html"); // or show error message
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Luxury Travel | Stellar Skies</title>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://use.typekit.net/cav5lva.css"/>
+  <link rel="icon" type="image/ico" href="static/img/favicon.ico"/>
+  <!-- Add this in <head> -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Rubik', sans-serif;
+      background: linear-gradient(135deg, #0a0a0a, #1b1b1b);
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+    #bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 100vw;
+      object-fit: cover;
+      z-index: -1;
+      filter: brightness(0.5);
+    }
+       /* Navbar */
+       .navbar {
+      background: rgba(0, 0, 0, 0.85);
+      padding: 1rem 2rem;
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .nav-link {
+      color: #ff4d4d !important;
+      margin: 0 10px;
+      transition: 0.3s;
+    }
+
+    .nav-link:hover {
+      color: #fff !important;
+    }
+
+    .dropdown-menu-dark {
+      background-color: rgba(0, 0, 0, 0.95);
+      border: none;
+      border-radius: 10px;
+    }
+
+    .dropdown-menu-dark .dropdown-item {
+      color: #f0f0f0;
+      padding: 10px 20px;
+      font-size: 1rem;
+    }
+
+    .dropdown-menu-dark .dropdown-item:hover {
+      background-color: #ff007f;
+      color: #fff;
+      border-radius: 5px;
+    }
+
+    /* Search */
+    .search-container {
+      display: flex;
+      align-items: center;
+      background: #2c2c2c;
+      padding: 8px 15px;
+      border-radius: 50px;
+      margin-left: 20px;
+    }
+
+    #searchBar {
+      background: transparent;
+      border: none;
+      color: #fff;
+      width: 220px;
+      padding: 5px 10px;
+    }
+
+    #searchBar::placeholder {
+      color: #ccc;
+    }
+
+    .search-container button {
+      background: #817a7d;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+    }
+   
+    .hero {
+      text-align: center;
+      padding: 120px 20px 60px;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: bold;
+      color: #f5edf1;
+      text-shadow: 0 0 15px rgb(11, 11, 11);
+    }
+
+    .luxury-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+      padding: 40px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .luxury-card {
+      background: #1a1a1a;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(255, 0, 127, 0.3);
+      transition: all 0.4s ease;
+      transform-style: preserve-3d;
+    }
+
+    .luxury-card:hover {
+      transform: translateY(-10px) scale(1.03) rotateX(3deg);
+      box-shadow: 0 25px 50px rgba(255, 0, 127, 0.4);
+    }
+
+    .luxury-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      filter: brightness(90%);
+    }
+
+    .luxury-info {
+      padding: 20px;
+    }
+
+    .luxury-info h3 {
+      color: #ff4d4d;
+      margin-bottom: 10px;
+    }
+
+    .luxury-info p {
+      color: #ccc;
+      font-size: 0.95rem;
+    }
+
+    footer {
+      background: rgba(0, 0, 0, 0.95);
+      padding: 40px 0;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    footer a {
+      color: #ff4d4d;
+      margin: 0 15px;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+
+     <!-- Background Video -->
+  <video autoplay muted loop id="bg-video">
+    <source src="4185235-hd_1920_1080_25fps.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video> 
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg">
+  <a class="navbar-brand" href="#">✈ Stellar Skies</a>
+
+  <div class="search-container ml-4">
+    <input type="text" id="searchBar" placeholder="Search...">
+    <button onclick="performSearch()">🔍</button>
+  </div>
+
+  <button class="navbar-toggler text-white" type="button" data-toggle="collapse" data-target="#navbarNav">
+    ☰
+  </button>
+
+  <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" data-toggle="dropdown">About Us</a>
+        <div class="dropdown-menu dropdown-menu-dark">
+          <a class="dropdown-item" href="about.html">Who We Are</a>
+          <a class="dropdown-item" href="history.html">History</a>
+          <a class="dropdown-item" href="founders.html">Our Founders</a>
+          <a class="dropdown-item" href="terms.html">Terms</a>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="destDropdown" data-toggle="dropdown">Destinations</a>
+        <div class="dropdown-menu dropdown-menu-dark">
+          <a class="dropdown-item" href="destinations.html">Explore All</a>
+          <a class="dropdown-item" href="popular.html">Popular</a>
+          <a class="dropdown-item" href="luxury travel.html">Luxury Trips</a>
+          <a class="dropdown-item" href="budget travel.html">Budget Travel</a>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="bookDropdown" data-toggle="dropdown">Book Now</a>
+        <div class="dropdown-menu dropdown-menu-dark">
+          <a class="dropdown-item" href="trip details.html">Trip Details</a>
+          <a class="dropdown-item" href="payment page.html">Payment</a>
+          <a class="dropdown-item" href="confirmation page.html">Confirmation</a>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="loginDropdown" data-toggle="dropdown">Account</a>
+        <div class="dropdown-menu dropdown-menu-dark">
+          <a class="dropdown-item" href="login.html">Login</a>
+          <a class="dropdown-item" href="register.html">Sign Up</a>
+          <a class="dropdown-item" href="forgot password.html">Forgot Password</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Luxury Destinations</h1>
+    <p>Indulge in the world’s most elite travel experiences ✨</p>
+  </section>
+
+  <!-- Luxury Cards -->
+  <section class="luxury-grid">
+    <div class="luxury-card">
+      <img src="https://wallpaperaccess.com/full/532651.jpg" alt="Santorini">
+      <div class="luxury-info">
+        <h3>Santorini, Greece</h3>
+        <p>Romantic white-washed villas and infinity pools overlooking the Aegean Sea.</p>
+      </div>
+    </div>
+
+    <div class="luxury-card">
+      <img src="https://www.hdwallpapers.in/download/monte_carlo_harbor_house_monaco_4k_hd_travel-3840x2160.jpg" alt="Dubai Burj Al Arab">
+      <div class="luxury-info">
+        <h3>Monaco, Europe</h3>
+        <p>Experience iconic luxury with personal butlers and Fromula 1 grand prix races.</p>
+      </div>
+    </div>
+
+    <div class="luxury-card">
+      <img src="https://d21tnpcmryx103.cloudfront.net/portals_articles/445/cover/P1140750.jpg?crop=smart&mt=1674552863&width=600&height=335&density=2" alt="Capri, Italy">
+      <div class="luxury-info">
+        <h3>Capri, Italy</h3>
+        <p>Private yachts, cliffside views, and timeless Italian sophistication await you.</p>
+      </div>
+    </div>
+
+    <div class="luxury-card">
+      <img src="https://picjumbo.com/wp-content/uploads/beautiful-mount-fuji-free-photo-2210x1473.jpg" alt="Fuji, Japan">
+      <div class="luxury-info">
+        <h3>Fuji, Japan</h3>
+        <p>Scenic city with iconic mountain views and serene natural beauty.</p>
+      </div>
+    </div>
+
+    <div class="luxury-card">
+      <img src="https://wallpapers.com/images/file/las-vegas-skyline-qevvt1myky89hdmd.jpg" alt="Las Vegas">
+      <div class="luxury-info">
+        <h3>Las Vegas, USA</h3>
+        <p>Vibrant nightlife, dazzling casinos, world-class entertainment, and endless excitement.</p>
+      </div>
+    </div>
+
+    <div class="luxury-card">
+      <img src="http://wallpapercave.com/wp/wp1916455.jpg" alt="Madrid, Spain">
+      <div class="luxury-info">
+        <h3>Madrid, Spain</h3>
+        <p>Historic charm, vibrant culture, stunning architecture, lively streets, and tapas delights.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div>
+      <a href="about.html">About</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+    </div>
+    <div class="mt-3">
+      &copy; 2025 Stellar Skies · Redefining Luxury Travel.
+    </div>
+  </footer>
+<script>
+      // Search Function
+      const pages = [
+      { name: "Home", url: "index (2).html" },
+      { name: "About Us", url: "about.html" },
+      { name: "Destinations", url: "destinations.html" },
+      { name: "Book Now", url: "trip details.html" },
+      { name: "Login", url: "login.html" },
+      { name: "budget-friendly destinations", url: "budget travel.html" },
+      { name: "Luxury Travelling", url: "Luxury travel.html" },
+      { name: "popular destinations", url: "popular.html" },
+    ];
+
+    function performSearch() {
+      const query = document.getElementById("searchBar").value.toLowerCase();
+      const result = pages.find(page => page.name.toLowerCase().includes(query));
+      if (result) {
+        window.location.href = result.url;
+      } else {
+        alert("No results found.");
+      }
+    }
+</script>
+</body>
+</html>

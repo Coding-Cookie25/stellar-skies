@@ -1,0 +1,335 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.html"); // or show error message
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personal Details | Stellar Skies</title>
+  <link rel="stylesheet" href="https://use.typekit.net/cav5lva.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rubik:wght@300;400;500;700&display=swap" />
+  <!-- Add this in <head> -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Rubik', sans-serif;
+      background: linear-gradient(135deg, #0a0a0a, #1b1b1b);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    video.video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+      opacity: 0.5;
+    }
+    /* Navbar */
+    .navbar {
+      background: rgba(0, 0, 0, 0.85);
+      padding: 1rem 2rem;
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .nav-link {
+      color: #ff4d4d !important;
+      margin: 0 10px;
+      transition: 0.3s;
+    }
+
+    .nav-link:hover {
+      color: #fff !important;
+    }
+
+    .dropdown-menu-dark {
+      background-color: rgba(0, 0, 0, 0.95);
+      border: none;
+      border-radius: 10px;
+    }
+
+    .dropdown-menu-dark .dropdown-item {
+      color: #f0f0f0;
+      padding: 10px 20px;
+      font-size: 1rem;
+    }
+
+    .dropdown-menu-dark .dropdown-item:hover {
+      background-color: #ff007f;
+      color: #fff;
+      border-radius: 5px;
+    }
+
+    /* Search */
+    .search-container {
+      display: flex;
+      align-items: center;
+      background: #2c2c2c;
+      padding: 8px 15px;
+      border-radius: 50px;
+      margin-left: 20px;
+    }
+
+    #searchBar {
+      background: transparent;
+      border: none;
+      color: #fff;
+      width: 220px;
+      padding: 5px 10px;
+    }
+
+    #searchBar::placeholder {
+      color: #ccc;
+    }
+
+    .search-container button {
+      background: #817a7d;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .container {
+      max-width: 450px;
+      margin: 100px auto;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0px 0px 20px rgba(255, 0, 127, 0.5);
+      text-align: center;
+    }
+
+    h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #ff007f;
+      text-shadow: 0 0 10px rgba(255, 0, 127, 0.7);
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      background: rgba(76, 76, 76, 0.612);
+      color: white;
+      transition: 0.3s ease-in-out;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      box-shadow: 0 0 10px #ff007f;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      background: linear-gradient(45deg, #ff007f, #b300b3);
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: 0.4s ease;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0px 0px 15px #ff007f;
+    }
+    footer {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  padding: 40px 0 60px;
+  font-size: 0.95rem;
+  color: #bbb;
+}
+
+footer .container {
+  max-width: 1200px;
+  margin: auto;
+  text-align: center;
+}
+
+footer .links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-bottom: 20px;
+}
+
+footer .links a {
+  color: #fff;
+  text-decoration: none;
+}
+
+footer .links a:hover {
+  color: #ff4d4d;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Background Video -->
+  <video class="video-background" autoplay muted loop>
+    <source src="https://cdn.pixabay.com/vimeo/811229408/sky-150135.mp4?width=640&hash=2bba9603d8395de546e509ec9f58cb0f267407b8" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="#">✈ Stellar Skies</a>
+
+    <div class="search-container ml-4">
+      <input type="text" id="searchBar" placeholder="Search...">
+      <button onclick="performSearch()">🔍</button>
+    </div>
+
+    <button class="navbar-toggler text-white" type="button" data-toggle="collapse" data-target="#navbarNav">
+      ☰
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" data-toggle="dropdown">About Us</a>
+          <div class="dropdown-menu dropdown-menu-dark">
+            <a class="dropdown-item" href="about.html">Who We Are</a>
+            <a class="dropdown-item" href="history.html">History</a>
+            <a class="dropdown-item" href="founders.html">Our Founders</a>
+            <a class="dropdown-item" href="terms.html">Terms</a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="destDropdown" data-toggle="dropdown">Destinations</a>
+          <div class="dropdown-menu dropdown-menu-dark">
+            <a class="dropdown-item" href="destinations.html">Explore All</a>
+            <a class="dropdown-item" href="popular.html">Popular</a>
+            <a class="dropdown-item" href="luxury travel.html">Luxury Trips</a>
+            <a class="dropdown-item" href="budget travel.html">Budget Travel</a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="bookDropdown" data-toggle="dropdown">Book Now</a>
+          <div class="dropdown-menu dropdown-menu-dark">
+            <a class="dropdown-item" href="trip details.html">Trip Details</a>
+            <a class="dropdown-item" href="payment page.html">Payment</a>
+            <a class="dropdown-item" href="confirmation page.html">Confirmation</a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="loginDropdown" data-toggle="dropdown">Account</a>
+          <div class="dropdown-menu dropdown-menu-dark">
+            <a class="dropdown-item" href="login.html">Login</a>
+            <a class="dropdown-item" href="register.html">Sign Up</a>
+            <a class="dropdown-item" href="forgot password.html">Forgot Password</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h2>Enter Your Personal Details</h2>
+    <form id="personalDetailsForm">
+      <input type="text" id="fullName" placeholder="Full Name *" required />
+      <input type="number" id="age" placeholder="Age *" required />
+      <input type="email" id="email" placeholder="Email *" required />
+      <input type="tel" id="phoneNumber" placeholder="Phone Number *" required />
+      <select id="gender" required>
+        <option value="">Select Gender *</option>
+        <option value="Female">Female</option>
+        <option value="Male">Male</option>
+        <option value="Other">Other</option>
+      </select>
+      <input type="text" id="nationality" placeholder="Nationality" />
+      <button type="submit" class="btn">Next</button>
+    </form>
+  </div>
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="about.html">About</a>
+        <a href="destinations.html">Destinations</a>
+        <a href="trip details.html">Book</a>
+        <a href="contact us.html">Contact</a>
+      </div>
+      <div class="contact">
+        📍 Delhi, India · ✉️ support@stellarskies.com · ☎ +91 9993213543
+      </div>
+      <div class="copyright">
+        &copy; 2025 Stellar Skies Ltd. All rights reserved.
+      </div>
+    </div>
+  </footer>
+  
+  <script>
+        // Search Function
+        const pages = [
+      { name: "Home", url: "index (2).html" },
+      { name: "About Us", url: "about.html" },
+      { name: "Destinations", url: "destinations.html" },
+      { name: "Book Now", url: "trip details.html" },
+      { name: "Login", url: "login.html" },
+      { name: "budget-friendly destinations", url: "budget travel.html" },
+      { name: "Luxury Travelling", url: "Luxury travel.html" },
+      { name: "popular destinations", url: "popular.html" },
+    ];
+
+    function performSearch() {
+      const query = document.getElementById("searchBar").value.toLowerCase();
+      const result = pages.find(page => page.name.toLowerCase().includes(query));
+      if (result) {
+        window.location.href = result.url;
+      } else {
+        alert("No results found.");
+      }
+    }
+
+    document.getElementById("personalDetailsForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      // Store values in sessionStorage
+      sessionStorage.setItem("name", document.getElementById("fullName").value);
+      sessionStorage.setItem("age", document.getElementById("age").value);
+      sessionStorage.setItem("email", document.getElementById("email").value);
+      sessionStorage.setItem("contact", document.getElementById("phoneNumber").value);
+      sessionStorage.setItem("gender", document.getElementById("gender").value);
+      sessionStorage.setItem("nationality", document.getElementById("nationality").value);
+
+      // Redirect to trip details page
+      window.location.href = "trip details.html";
+    });
+  </script>
+
+</body>
+</html>
